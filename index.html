@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MentAlign Spraak naar Tekst – Gratis voor GGZ-behandelaren</title>
+  <meta name="description" content="MentAlign biedt een gratis spraak-naar-tekst tool voor GGZ-behandelaren met BIG-registratie. Verminder registratielast. Veilig gehost in Nederland." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:       #0d1f2d;
+      --deep:      #0a2e3d;
+      --teal:      #0e7c7b;
+      --teal-light:#12a09f;
+      --amber:     #e8a838;
+      --cream:     #f5f0e8;
+      --mist:      #eaf3f3;
+      --white:     #ffffff;
+      --text-body: #2b3e4d;
+      --text-muted:#5a7080;
+      --border:    rgba(14,124,123,.18);
+      --radius:    12px;
+      --ff-display: 'DM Serif Display', Georgia, serif;
+      --ff-body:    'DM Sans', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--ff-body);
+      background: var(--cream);
+      color: var(--text-body);
+      overflow-x: hidden;
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      background: var(--deep);
+      color: var(--white);
+      min-height: 92vh;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* subtle animated mesh */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 70% 60% at 20% 30%, rgba(14,124,123,.32) 0%, transparent 65%),
+        radial-gradient(ellipse 50% 50% at 80% 70%, rgba(232,168,56,.12) 0%, transparent 60%);
+      animation: meshShift 12s ease-in-out infinite alternate;
+      pointer-events: none;
+    }
+    @keyframes meshShift {
+      from { transform: scale(1) translate(0,0); }
+      to   { transform: scale(1.06) translate(-1%,1%); }
+    }
+
+    /* dot grid texture */
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(255,255,255,.06) 1px, transparent 1px);
+      background-size: 28px 28px;
+      pointer-events: none;
+    }
+
+    nav {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 24px 48px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+    .logo-mark {
+      width: 38px; height: 38px;
+      background: var(--teal);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .logo-mark svg { width: 22px; height: 22px; fill: var(--white); }
+    .logo-text {
+      font-family: var(--ff-display);
+      font-size: 1.35rem;
+      color: var(--white);
+      letter-spacing: -.01em;
+    }
+    .logo-text span { color: var(--teal-light); }
+
+    .nav-badge {
+      font-size: .72rem;
+      font-weight: 500;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--amber);
+      border: 1px solid rgba(232,168,56,.4);
+      padding: 5px 14px;
+      border-radius: 40px;
+    }
+
+    .hero-body {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 64px 48px 48px;
+      max-width: 800px;
+      opacity: 0;
+      transform: translateY(24px);
+      animation: fadeUp .9s .2s ease forwards;
+    }
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(14,124,123,.25);
+      border: 1px solid rgba(14,124,123,.5);
+      border-radius: 40px;
+      padding: 6px 16px;
+      font-size: .78rem;
+      font-weight: 500;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      color: var(--teal-light);
+      margin-bottom: 28px;
+    }
+    .hero-pill::before {
+      content: '';
+      width: 7px; height: 7px;
+      background: var(--teal-light);
+      border-radius: 50%;
+      animation: pulse 2s ease infinite;
+    }
+    @keyframes pulse {
+      0%,100% { opacity:1; transform: scale(1); }
+      50%      { opacity:.5; transform: scale(1.4); }
+    }
+
+    .hero h1 {
+      font-family: var(--ff-display);
+      font-size: clamp(2.4rem, 5vw, 3.8rem);
+      line-height: 1.13;
+      letter-spacing: -.02em;
+      color: var(--white);
+      margin-bottom: 24px;
+    }
+    .hero h1 em {
+      font-style: italic;
+      color: var(--teal-light);
+    }
+
+    .hero-sub {
+      font-size: 1.1rem;
+      font-weight: 300;
+      color: rgba(255,255,255,.72);
+      max-width: 560px;
+      line-height: 1.7;
+      margin-bottom: 40px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      background: var(--teal);
+      color: var(--white);
+      border: none;
+      padding: 14px 32px;
+      border-radius: 8px;
+      font-family: var(--ff-body);
+      font-size: .95rem;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background .2s, transform .15s;
+      display: inline-flex; align-items: center; gap: 10px;
+    }
+    .btn-primary:hover { background: var(--teal-light); transform: translateY(-1px); }
+
+    .btn-ghost {
+      background: transparent;
+      color: rgba(255,255,255,.8);
+      border: 1px solid rgba(255,255,255,.25);
+      padding: 14px 28px;
+      border-radius: 8px;
+      font-family: var(--ff-body);
+      font-size: .95rem;
+      font-weight: 400;
+      cursor: pointer;
+      text-decoration: none;
+      transition: border-color .2s, color .2s;
+    }
+    .btn-ghost:hover { border-color: rgba(255,255,255,.6); color: var(--white); }
+
+    .hero-stats {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      gap: 0;
+      border-top: 1px solid rgba(255,255,255,.08);
+    }
+    .stat {
+      flex: 1;
+      padding: 28px 48px;
+      border-right: 1px solid rgba(255,255,255,.08);
+    }
+    .stat:last-child { border-right: none; }
+    .stat-number {
+      font-family: var(--ff-display);
+      font-size: 2rem;
+      color: var(--teal-light);
+      display: block;
+    }
+    .stat-label {
+      font-size: .82rem;
+      color: rgba(255,255,255,.5);
+      margin-top: 4px;
+      font-weight: 300;
+    }
+
+    /* ─── SECTIONS ─── */
+    section { padding: 100px 48px; }
+
+    .section-label {
+      font-size: .72rem;
+      font-weight: 500;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-family: var(--ff-display);
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      line-height: 1.2;
+      letter-spacing: -.02em;
+      color: var(--ink);
+      max-width: 680px;
+      margin-bottom: 20px;
+    }
+    .section-title em { font-style: italic; color: var(--teal); }
+
+    .section-intro {
+      font-size: 1.05rem;
+      font-weight: 300;
+      color: var(--text-muted);
+      line-height: 1.75;
+      max-width: 600px;
+      margin-bottom: 64px;
+    }
+
+    /* ─── HOW IT WORKS ─── */
+    .how { background: var(--white); }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 2px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .step {
+      background: var(--white);
+      padding: 40px 36px;
+      position: relative;
+    }
+    .step-num {
+      font-family: var(--ff-display);
+      font-size: 3.5rem;
+      color: rgba(14,124,123,.1);
+      line-height: 1;
+      position: absolute;
+      top: 24px; right: 28px;
+    }
+    .step-icon {
+      width: 44px; height: 44px;
+      background: var(--mist);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 20px;
+    }
+    .step-icon svg { width: 22px; height: 22px; stroke: var(--teal); fill: none; stroke-width: 1.6; }
+    .step h3 {
+      font-family: var(--ff-display);
+      font-size: 1.15rem;
+      color: var(--ink);
+      margin-bottom: 10px;
+    }
+    .step p {
+      font-size: .9rem;
+      line-height: 1.65;
+      color: var(--text-muted);
+      font-weight: 300;
+    }
+
+    /* ─── FEATURES ─── */
+    .features { background: var(--cream); }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+    .feature-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 36px 32px;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .feature-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 40px rgba(14,124,123,.1);
+    }
+    .feature-card.highlight {
+      background: var(--deep);
+      border-color: var(--teal);
+    }
+    .feature-card.highlight h3,
+    .feature-card.highlight p { color: var(--white); }
+    .feature-card.highlight p { color: rgba(255,255,255,.65); }
+    .feature-icon {
+      width: 46px; height: 46px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 20px;
+      background: var(--mist);
+    }
+    .feature-card.highlight .feature-icon { background: rgba(14,124,123,.3); }
+    .feature-icon svg { width: 22px; height: 22px; stroke: var(--teal); fill: none; stroke-width: 1.6; }
+    .feature-card.highlight .feature-icon svg { stroke: var(--teal-light); }
+    .feature-card h3 {
+      font-family: var(--ff-display);
+      font-size: 1.1rem;
+      color: var(--ink);
+      margin-bottom: 10px;
+    }
+    .feature-card p {
+      font-size: .88rem;
+      line-height: 1.7;
+      color: var(--text-muted);
+      font-weight: 300;
+    }
+    .free-badge {
+      display: inline-block;
+      background: var(--amber);
+      color: var(--ink);
+      font-size: .72rem;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 40px;
+      margin-bottom: 16px;
+    }
+
+    /* ─── PRICING ─── */
+    .pricing { background: var(--ink); color: var(--white); }
+    .pricing .section-title { color: var(--white); }
+    .pricing .section-intro { color: rgba(255,255,255,.55); }
+    .pricing .section-label { color: var(--teal-light); }
+
+    .price-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .price-card {
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: var(--radius);
+      padding: 36px 32px;
+      background: rgba(255,255,255,.04);
+    }
+    .price-card.featured {
+      border-color: var(--teal);
+      background: rgba(14,124,123,.12);
+    }
+    .price-card h3 {
+      font-family: var(--ff-display);
+      font-size: 1.2rem;
+      margin-bottom: 8px;
+      color: var(--white);
+    }
+    .price-main {
+      font-family: var(--ff-display);
+      font-size: 2.8rem;
+      color: var(--teal-light);
+      line-height: 1;
+      margin: 16px 0 4px;
+    }
+    .price-sub {
+      font-size: .82rem;
+      color: rgba(255,255,255,.4);
+      margin-bottom: 24px;
+    }
+    .price-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .price-features li {
+      font-size: .88rem;
+      color: rgba(255,255,255,.7);
+      padding-left: 20px;
+      position: relative;
+      font-weight: 300;
+    }
+    .price-features li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: var(--teal-light);
+      font-weight: 600;
+    }
+
+    /* ─── INTEGRATIONS ─── */
+    .integrations { background: var(--white); }
+
+    .integration-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .integration-item {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding: 20px 28px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--mist);
+    }
+    .integration-name {
+      font-weight: 500;
+      color: var(--ink);
+      flex: 1;
+    }
+    .integration-note {
+      font-size: .82rem;
+      color: var(--text-muted);
+      font-weight: 300;
+      flex: 2;
+    }
+    .vink {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .8rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .vink.green { background: #d1fae5; color: #065f46; }
+    .vink.orange { background: #fef3c7; color: #92400e; }
+    .vink.gray  { background: #f3f4f6; color: #9ca3af; }
+
+    /* ─── TRUSTED / SPONSORS ─── */
+    .trust { background: var(--cream); }
+    .trust-row {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .trust-card {
+      flex: 1;
+      min-width: 220px;
+      padding: 28px 32px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--white);
+    }
+    .trust-card .tc-label {
+      font-size: .72rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      font-weight: 500;
+      margin-bottom: 10px;
+    }
+    .trust-card .tc-name {
+      font-family: var(--ff-display);
+      font-size: 1.3rem;
+      color: var(--teal);
+    }
+    .trust-card .tc-desc {
+      margin-top: 8px;
+      font-size: .85rem;
+      color: var(--text-muted);
+      font-weight: 300;
+      line-height: 1.6;
+    }
+
+    /* ─── BETA NOTICE ─── */
+    .beta-bar {
+      background: linear-gradient(135deg, var(--teal) 0%, var(--deep) 100%);
+      color: var(--white);
+      text-align: center;
+      padding: 48px;
+    }
+    .beta-bar h2 {
+      font-family: var(--ff-display);
+      font-size: clamp(1.5rem,3vw,2.2rem);
+      margin-bottom: 12px;
+    }
+    .beta-bar p {
+      font-size: .95rem;
+      font-weight: 300;
+      opacity: .75;
+      max-width: 540px;
+      margin: 0 auto 28px;
+      line-height: 1.7;
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--ink);
+      color: rgba(255,255,255,.4);
+      text-align: center;
+      padding: 32px 48px;
+      font-size: .8rem;
+      line-height: 1.8;
+    }
+    footer a { color: var(--teal-light); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 640px) {
+      nav { padding: 20px 24px; }
+      .hero-body { padding: 48px 24px 32px; }
+      .hero-stats { flex-direction: column; }
+      .stat { padding: 20px 24px; border-right: none; border-bottom: 1px solid rgba(255,255,255,.08); }
+      section { padding: 72px 24px; }
+      .integration-item { flex-wrap: wrap; gap: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════ HERO ═══════════════════════════ -->
+<header class="hero">
+  <nav>
+    <a class="logo" href="https://mentalign.nl">
+      <div class="logo-mark">
+        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg>
+      </div>
+      <span class="logo-text">Ment<span>Align</span></span>
+    </a>
+    <span class="nav-badge">Beta · poc.mentalign.nl</span>
+  </nav>
+
+  <div class="hero-body">
+    <div class="hero-pill">Gratis voor GGZ-behandelaren met BIG-registratie</div>
+    <h1>Minder schrijven,<br /><em>meer behandelen.</em></h1>
+    <p class="hero-sub">
+      MentAlign zet gesproken sessies automatisch om in professionele rapportages. Geen licentiekosten — u betaalt alleen de rekenkracht die u daadwerkelijk gebruikt.
+    </p>
+    <div class="hero-actions">
+      <a class="btn-primary" href="mailto:info@mentalign.nl">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.22 1.18 2 2 0 012.2 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.41 7.1a16 16 0 006.44 6.44l1.06-1.06a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.92z"/></svg>
+        Aanvragen
+      </a>
+      <a class="btn-ghost" href="#hoe-werkt-het">Meer lezen ↓</a>
+    </div>
+  </div>
+
+  <div class="hero-stats">
+    <div class="stat">
+      <span class="stat-number">15+</span>
+      <span class="stat-label">Aanbieders spraak &amp; taal</span>
+    </div>
+    <div class="stat">
+      <span class="stat-number">€0</span>
+      <span class="stat-label">Licentiekosten</span>
+    </div>
+    <div class="stat">
+      <span class="stat-number">NL</span>
+      <span class="stat-label">Hosting op eigen servers</span>
+    </div>
+    <div class="stat">
+      <span class="stat-number">BIG</span>
+      <span class="stat-label">Alleen voor geregistreerde behandelaren</span>
+    </div>
+  </div>
+</header>
+
+<!-- ═══════════════════════════ HOW IT WORKS ═══════════════════════════ -->
+<section class="how" id="hoe-werkt-het">
+  <div class="section-label">Werkwijze</div>
+  <h2 class="section-title">Van gesprek naar<em> rapportage</em> in drie stappen</h2>
+  <p class="section-intro">Geen complexe installatie. Geen IT-afdeling nodig. Open de browser, log in met uw BIG-registratie en begin.</p>
+
+  <div class="steps">
+    <div class="step">
+      <span class="step-num">01</span>
+      <div class="step-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z"/><path d="M19 10v2a7 7 0 01-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+      </div>
+      <h3>Neem op</h3>
+      <p>Start de sessie in de browser. MentAlign luistert mee — u bepaalt zelf welke technologie voor spraakherkenning wordt gebruikt.</p>
+    </div>
+    <div class="step">
+      <span class="step-num">02</span>
+      <div class="step-icon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      </div>
+      <h3>Realtime feedback</h3>
+      <p>De rapportagemodule herkent onderwerpen zoals risico-inschatting, doelen en afspraken en signaleert live wat al besproken is.</p>
+    </div>
+    <div class="step">
+      <span class="step-num">03</span>
+      <div class="step-icon">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+      </div>
+      <h3>Gegenereerde rapportage</h3>
+      <p>Het taalmodel schrijft een concept-rapportage op basis van het gesprek. U beoordeelt, past aan en bewaart — klaar in minuten.</p>
+    </div>
+    <div class="step">
+      <span class="step-num">04</span>
+      <div class="step-icon">
+        <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      </div>
+      <h3>Exporteer naar uw EPD</h3>
+      <p>Kopieer direct naar uw dossier of gebruik een van de beschikbare koppelingen met EPD-systemen.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ FEATURES ═══════════════════════════ -->
+<section class="features" id="functies">
+  <div class="section-label">Functionaliteiten</div>
+  <h2 class="section-title">Gebouwd voor <em>de behandelkamer</em></h2>
+  <p class="section-intro">Alle techniek op de achtergrond, zodat u volledig aanwezig kunt zijn in het gesprek.</p>
+
+  <div class="features-grid">
+    <div class="feature-card highlight">
+      <div class="free-badge">Gratis</div>
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 000-7.78z"/></svg>
+      </div>
+      <h3>Gratis voor GGZ-behandelaren</h3>
+      <p>Met een geldige BIG-registratie heeft u kosteloos toegang tot het volledige platform. Betaal alleen de daadwerkelijke rekenkracht — geen maandelijkse licentie.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M4.93 4.93l1.41 1.41M12 2v2M12 20v2M20 12h2M2 12h2M19.07 19.07l-1.41-1.41M4.93 19.07l1.41-1.41"/></svg>
+      </div>
+      <h3>Keuze uit 15+ technologieën</h3>
+      <p>Selecteer zelf welke aanbieder van spraakherkenning en taalmodel u wilt gebruiken. Van open source tot commerciële diensten — u bent niet gebonden.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      </div>
+      <h3>Realtime onderwerpsmonitoring</h3>
+      <p>De rapportagemodule herkent tijdens het gesprek of verplichte onderwerpen aan bod komen, zoals suïcidaliteit, medicatie of afspraken.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+      </div>
+      <h3>Aantoonbaar veilig in Nederland</h3>
+      <p>Data verwerking op eigen servers in Nederland. Geen cloud-afhankelijkheid. AVG-compliant en geschikt voor gevoelige patiëntinformatie.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
+      </div>
+      <h3>Integreerbaar in bestaande workflows</h3>
+      <p>Via de Hawking Discovery API te koppelen aan uw eigen EPD of behandelplatform. Geen dubbele invoer, geen extra applicaties.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+      </div>
+      <h3>Opgezet als stichting</h3>
+      <p>MentAlign is een stichting zonder winstoogmerk, opgericht met als doel de registratielast in de GGZ structureel te verminderen.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ PRICING ═══════════════════════════ -->
+<section class="pricing" id="kosten">
+  <div class="section-label">Kosten</div>
+  <h2 class="section-title">Transparant &amp; eerlijk</h2>
+  <p class="section-intro">Geen verrassingen. Geen abonnement. U betaalt uitsluitend de daadwerkelijke rekenkracht van de door u gekozen aanbieder.</p>
+
+  <div class="price-cards">
+    <div class="price-card featured">
+      <h3>GGZ-behandelaar (BIG)</h3>
+      <div class="price-main">€0</div>
+      <div class="price-sub">Licentiekosten per maand</div>
+      <ul class="price-features">
+        <li>Onbeperkte toegang tot het platform</li>
+        <li>Keuze uit 15+ spraak- &amp; taalmodellen</li>
+        <li>Realtime rapportagemodule</li>
+        <li>Veilige NL-hosting inbegrepen</li>
+        <li>Kosten: alleen uw verbruik bij de gekozen aanbieder</li>
+      </ul>
+    </div>
+    <div class="price-card">
+      <h3>Organisatie / Instelling</h3>
+      <div class="price-main">Vraag aan</div>
+      <div class="price-sub">Op maat voor teams en instellingen</div>
+      <ul class="price-features">
+        <li>Centrale administratie &amp; gebruikersbeheer</li>
+        <li>Eigen rapportagetemplate per afdeling</li>
+        <li>EPD-koppeling via Hawking Discovery</li>
+        <li>SLA en prioriteitsondersteuning</li>
+        <li>Dedicated onboarding</li>
+      </ul>
+    </div>
+    <div class="price-card">
+      <h3>Ontwikkelaar / EPD-leverancier</h3>
+      <div class="price-main">API</div>
+      <div class="price-sub">Hawking.health integratie</div>
+      <ul class="price-features">
+        <li>Volledige REST API beschikbaar</li>
+        <li>Webhook-ondersteuning</li>
+        <li>Sandbox-omgeving voor testen</li>
+        <li>Documentatie &amp; developer support</li>
+        <li>Revenue-share model mogelijk</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ INTEGRATIONS ═══════════════════════════ -->
+<section class="integrations" id="koppelingen">
+  <div class="section-label">EPD-koppelingen</div>
+  <h2 class="section-title">Werkt met uw <em>bestaande systeem</em></h2>
+  <p class="section-intro">We bouwen actief aan koppelingen met de meest gebruikte EPD-systemen in de Nederlandse GGZ.</p>
+
+  <div class="integration-list">
+    <div class="integration-item">
+      <div class="vink green">✓</div>
+      <span class="integration-name">Hawking Discovery</span>
+      <span class="integration-note">Volledig geïntegreerd. Direct beschikbaar via het Hawking-platform.</span>
+    </div>
+    <div class="integration-item">
+      <div class="vink orange">~</div>
+      <span class="integration-name">Medicore</span>
+      <span class="integration-note">In ontwikkeling. API-koppeling technisch mogelijk — realisatie gepland.</span>
+    </div>
+    <div class="integration-item">
+      <div class="vink orange">~</div>
+      <span class="integration-name">ONS (Nedap Healthcare)</span>
+      <span class="integration-note">In ontwikkeling. API-koppeling technisch mogelijk — realisatie gepland.</span>
+    </div>
+    <div class="integration-item">
+      <div class="vink gray">✕</div>
+      <span class="integration-name">USER / MQ (PinkRoccade)</span>
+      <span class="integration-note">Nog niet mogelijk. Deze systemen ondersteunen op dit moment geen externe API-koppeling.</span>
+    </div>
+    <div class="integration-item">
+      <div class="vink gray">?</div>
+      <span class="integration-name">Overige EPD's</span>
+      <span class="integration-note">Neem contact op om de mogelijkheden voor uw systeem te bespreken.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ TRUST ═══════════════════════════ -->
+<section class="trust" id="partners">
+  <div class="section-label">Partners &amp; technologie</div>
+  <h2 class="section-title">Gebouwd op <em>solide fundamenten</em></h2>
+  <p class="section-intro">Hosting, techniek en initiatief worden gedragen door betrouwbare Nederlandse partijen.</p>
+
+  <div class="trust-row">
+    <div class="trust-card">
+      <div class="tc-label">Hosting gesponsord door</div>
+      <div class="tc-name">Exonet.nl</div>
+      <div class="tc-desc">Nederlandse managed hosting provider. Alle data blijft op servers in Nederland — aantoonbaar en gecontroleerd.</div>
+    </div>
+    <div class="trust-card">
+      <div class="tc-label">Techniek aangeboden door</div>
+      <div class="tc-name">Hawking.health</div>
+      <div class="tc-desc">Het MentAlign-platform draait op Hawking Discovery, een modulair zorgplatform voor digitalisering in de GGZ.</div>
+    </div>
+    <div class="trust-card">
+      <div class="tc-label">Initiatief van</div>
+      <div class="tc-name">Stichting MentAlign</div>
+      <div class="tc-desc">Een non-profit stichting die digitalisering in de GGZ bevordert. Geen aandeelhouders, geen winstoogmerk.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ BETA CTA ═══════════════════════════ -->
+<div class="beta-bar">
+  <h2>Dit is een beta-versie</h2>
+  <p>
+    De technologie wordt actief doorontwikkeld. We nodigen GGZ-behandelaren en instellingen uit om mee te denken, te testen en feedback te geven.
+  </p>
+  <a class="btn-primary" href="mailto:info@mentalign.nl">
+    Aanmelden als beta-tester
+  </a>
+</div>
+
+<!-- ═══════════════════════════ FOOTER ═══════════════════════════ -->
+<footer>
+  <p>
+    <strong style="color:rgba(255,255,255,.7)">Stichting MentAlign</strong> · poc.mentalign.nl<br />
+    Technologie: <a href="https://hawking.health">Hawking.health</a> &nbsp;|&nbsp;
+    Hosting: <a href="https://exonet.nl">Exonet.nl</a> &nbsp;|&nbsp;
+    <a href="https://mentalign.nl">mentalign.nl</a>
+  </p>
+  <p style="margin-top:8px">
+    © 2025 Stichting MentAlign. Alle rechten voorbehouden.
+    &nbsp;·&nbsp; <a href="mailto:info@mentalign.nl">info@mentalign.nl</a>
+  </p>
+</footer>
+
+</body>
+</html>
